@@ -3,7 +3,6 @@
 import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
 export default function ProfilePage() {
@@ -46,15 +45,9 @@ export default function ProfilePage() {
                     </div>
                 </div>
 
-                <Button variant="danger" onClick={() => signOut({ callbackUrl: "/login" })}>
+                <Button variant="danger" onClick={() => signOut({ callbackUrl: "/login" })} block>
                     Sign Out
                 </Button>
-
-                <p className="mt-4 text-sm">
-                    <Link href="/" className="text-primary hover:underline">
-                        ត្រឡប់ទៅទំព័រដើម
-                    </Link>
-                </p>
             </div>
         </div>
     );
