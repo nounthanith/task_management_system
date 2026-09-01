@@ -8,6 +8,7 @@ import { HiOutlineUser, HiOutlineEnvelope, HiOutlineKey, HiOutlineHashtag } from
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import Alert from "@/components/ui/Alert";
 
 export default function RegisterPage() {
     const [name, setName] = useState("");
@@ -17,14 +18,16 @@ export default function RegisterPage() {
     const [otp, setOtp] = useState("");
     const [step, setStep] = useState<1 | 2>(1);
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
     const router = useRouter();
 
     const handleGoogleSignUp = async () => {
         setError("");
+        setSuccess("");
         setGoogleLoading(true);
-        const result = await signIn("google", { callbackUrl: "/", redirect: false });
+        const result = await signIn("google", { callbackUrl: "/dashboard", redirect: false });
         if (result?.error) {
             setError("There was a problem registering with Google");
             setGoogleLoading(false);
@@ -34,6 +37,7 @@ export default function RegisterPage() {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
         if (password !== confirmPassword) {
             setError("The passwords do not match");
@@ -55,6 +59,7 @@ export default function RegisterPage() {
                 throw new Error(data.message || "Something went wrong. Please try again.");
             }
 
+            setSuccess("Account created! Enter the code we sent to verify your email.");
             setStep(2);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -66,6 +71,7 @@ export default function RegisterPage() {
     const handleVerifyOtp = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
 
         if (otp.length !== 6) {
             setError("Please enter the 6-digit code");
@@ -87,7 +93,8 @@ export default function RegisterPage() {
                 throw new Error(data.message || "Something went wrong. Please try again.");
             }
 
-            router.push("/login");
+            setSuccess("Email verified successfully! Redirecting to login...");
+            setTimeout(() => router.push("/login"), 1200);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
         } finally {
@@ -97,6 +104,7 @@ export default function RegisterPage() {
 
     const handleResend = async () => {
         setError("");
+        setSuccess("");
         setLoading(true);
         try {
             const res = await fetch("/api/auth/register", {
@@ -108,6 +116,7 @@ export default function RegisterPage() {
             if (!res.ok) {
                 throw new Error(data.message || "Something went wrong. Please try again.");
             }
+            setSuccess("A new code has been sent to your email.");
         } catch (err) {
             setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
         } finally {
@@ -137,10 +146,27 @@ export default function RegisterPage() {
                         </p>
                     </div>
 
+                    {success && (
+                        <Alert
+                            variant="success"
+                            dismissible
+                            className="mb-5"
+                            onDismiss={() => setSuccess("")}
+                        >
+                            {success}
+                        </Alert>
+                    )}
+
                     {error && (
-                        <div className="bg-accent-pink/30 border border-accent-pink/50 text-primary px-4 py-3 rounded-2xl mb-5 text-sm">
+                        <Alert
+                            variant="error"
+                            title="Something went wrong"
+                            dismissible
+                            className="mb-5"
+                            onDismiss={() => setError("")}
+                        >
                             {error}
-                        </div>
+                        </Alert>
                     )}
 
                     {step === 1 ? (

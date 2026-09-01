@@ -8,6 +8,7 @@ import { HiOutlineEnvelope, HiOutlineKey, HiOutlineArrowRight } from "react-icon
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import Alert from "@/components/ui/Alert";
 
 export default function LoginPage() {
     const { data: session, status } = useSession();
@@ -15,12 +16,14 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
 
     const handleCredentialsSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setSuccess("");
         setLoading(true);
 
         const result = await signIn("credentials", {
@@ -34,17 +37,26 @@ export default function LoginPage() {
         if (result?.error) {
             setError("Invalid email or password");
         } else if (result?.ok) {
-            window.location.href = result.url || "/profile";
+            setSuccess("Signed in successfully!");
+            setTimeout(() => {
+                window.location.href = result.url || "/dashboard";
+            }, 800);
         }
     };
 
     const handleGoogleSignIn = async () => {
         setError("");
+        setSuccess("");
         setGoogleLoading(true);
-        const result = await signIn("google", { callbackUrl: "/profile", redirect: false });
+        const result = await signIn("google", { callbackUrl: "/dashboard", redirect: false });
         if (result?.error) {
             setError("There was a problem signing in with Google");
             setGoogleLoading(false);
+        } else if (result?.ok) {
+            setSuccess("Signed in with Google successfully!");
+            setTimeout(() => {
+                window.location.href = result.url || "/dashboard";
+            }, 800);
         }
     };
 
@@ -82,10 +94,28 @@ export default function LoginPage() {
                         <p className="text-muted text-sm mt-2">Sign in to continue to your tasks</p>
                     </div>
 
+                    {success && (
+                        <Alert
+                            variant="success"
+                            title="Signed in"
+                            dismissible
+                            className="mb-5"
+                            onDismiss={() => setSuccess("")}
+                        >
+                            {success}
+                        </Alert>
+                    )}
+
                     {error && (
-                        <div className="bg-accent-pink/30 border border-accent-pink/50 text-primary px-4 py-3 rounded-2xl mb-5 text-sm">
+                        <Alert
+                            variant="error"
+                            title="Login failed"
+                            dismissible
+                            className="mb-5"
+                            onDismiss={() => setError("")}
+                        >
                             {error}
-                        </div>
+                        </Alert>
                     )}
 
                     {/* Credentials form */}

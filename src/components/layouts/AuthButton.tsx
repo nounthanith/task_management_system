@@ -21,7 +21,7 @@ export default function AuthButton() {
                 <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => router.push("/profile")}
+                    onClick={() => router.push("/dashboard")}
                 >
                     {session.user?.name?.charAt(0).toUpperCase()}
                 </Button>
