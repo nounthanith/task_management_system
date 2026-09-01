@@ -1,13 +1,15 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export default function LoginPage() {
     const { data: session, status } = useSession();
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -30,19 +32,25 @@ export default function LoginPage() {
         if (result?.error) {
             setError("អ៊ីមែល ឬលេខសម្ងាត់មិនត្រឹមត្រូវ");
         } else if (result?.ok) {
-            window.location.href = result.url || "/";
+            window.location.href = result.url || "/profile";
         }
     };
 
     const handleGoogleSignIn = async () => {
         setError("");
         setGoogleLoading(true);
-        const result = await signIn("google", { callbackUrl: "/", redirect: false });
+        const result = await signIn("google", { callbackUrl: "/profile", redirect: false });
         if (result?.error) {
             setError("មានបញ្ហាក្នុងការចូលប្រើប្រាស់ជាមួយ Google");
             setGoogleLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (session) {
+            router.replace("/profile");
+        }
+    }, [session, router]);
 
     if (status === "loading")
         return (
@@ -51,22 +59,7 @@ export default function LoginPage() {
             </div>
         );
 
-    if (session) {
-        return (
-            <div className="min-h-screen flex items-center justify-center px-4">
-                <div className="w-full max-w-md p-8 bg-surface rounded-2xl shadow-card border border-border text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary">
-                        {session.user?.name?.charAt(0).toUpperCase()}
-                    </div>
-                    <h2 className="text-2xl font-bold mb-2">Welcome, {session.user?.name}!</h2>
-                    <p className="text-muted mb-6">Logged in as: {session.user?.email}</p>
-                    <Button variant="danger" onClick={() => signOut({ callbackUrl: "/login" })}>
-                        Sign Out
-                    </Button>
-                </div>
-            </div>
-        );
-    }
+    if (session) return null;
 
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
