@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { FiPlus, FiArrowRight, FiCalendar, FiList, FiClock, FiTrendingUp } from "react-icons/fi";
+import { FiPlus, FiArrowRight, FiCalendar, FiList, FiClock } from "react-icons/fi";
 import TaskCalendar from "@/components/dashboard/TaskCalendar";
 import { toDateKey, serializeEvent, type CalendarEvent } from "@/lib/calendar";
 
@@ -31,36 +31,30 @@ function StatCard({
     icon: Icon,
     from,
     to,
-    trend,
 }: {
     label: string;
     value: number;
     icon: React.ComponentType<{ className?: string }>;
     from: string;
     to: string;
-    trend: string;
 }) {
     return (
-        <div className="group relative overflow-hidden rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+        <div className="group relative overflow-hidden rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-4 sm:p-5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
             <div
                 className={`absolute -top-6 -right-6 w-16 h-16 rounded-full bg-gradient-to-br ${from} ${to} opacity-20 blur-xl group-hover:opacity-40 transition-opacity`}
             />
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <span
-                        className={`relative z-10 w-11 h-11 rounded-xl flex items-center justify-center text-white shadow-md bg-gradient-to-br ${from} ${to}`}
+                        className={`relative z-10 w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-white shadow-md bg-gradient-to-br ${from} ${to}`}
                     >
-                        <Icon className="text-lg" />
+                        <Icon className="text-base sm:text-lg" />
                     </span>
                     <div>
-                        <p className="text-sm text-neutral-500">{label}</p>
-                        <p className="text-3xl font-bold text-neutral-900 leading-tight">{value}</p>
+                        <p className="text-xs sm:text-sm text-neutral-500">{label}</p>
+                        <p className="text-2xl sm:text-3xl font-bold text-neutral-900 leading-tight">{value}</p>
                     </div>
                 </div>
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-neutral-400">
-                    <FiTrendingUp className="text-orange-500" />
-                    {trend}
-                </span>
             </div>
         </div>
     );
@@ -122,17 +116,17 @@ export default function DashboardOverview() {
                             <span className="text-white font-semibold">{monthEvents}</span> this month.
                         </p>
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                         <Link
                             href="/dashboard/events"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium border border-white/15 text-white hover:bg-white/10 transition-all duration-200 hover:border-white/25 active:scale-[0.98]"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-2.5 rounded-xl text-sm font-medium border border-white/15 text-white hover:bg-white/10 transition-all duration-200 hover:border-white/25 active:scale-[0.98]"
                         >
                             <FiList />
                             My events
                         </Link>
                         <Link
                             href="/dashboard/calendar/new"
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:from-orange-600 hover:to-orange-500 shadow-lg shadow-orange-500/25 transition-all duration-200 active:scale-[0.98]"
+                            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white px-5 py-3 sm:py-2.5 rounded-xl text-sm font-semibold hover:from-orange-600 hover:to-orange-500 shadow-lg shadow-orange-500/25 transition-all duration-200 active:scale-[0.98]"
                         >
                             <FiPlus />
                             Add event
@@ -142,10 +136,10 @@ export default function DashboardOverview() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <StatCard label="Total events" value={total} icon={FiList} from="from-orange-400" to="to-orange-500" trend={`${total} total`} />
-                <StatCard label="This month" value={monthEvents} icon={FiCalendar} from="from-sky-400" to="to-blue-500" trend="month" />
-                <StatCard label="Today" value={todayEvents.length} icon={FiClock} from="from-emerald-400" to="to-teal-500" trend="active" />
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-4 sm:grid-cols-3">
+                <StatCard label="Total events" value={total} icon={FiList} from="from-orange-400" to="to-orange-500" />
+                <StatCard label="This month" value={monthEvents} icon={FiCalendar} from="from-sky-400" to="to-blue-500" />
+                <StatCard label="Today" value={todayEvents.length} icon={FiClock} from="from-emerald-400" to="to-teal-500" />
             </div>
 
             {/* Main grid */}
@@ -158,9 +152,12 @@ export default function DashboardOverview() {
                 {/* Right column */}
                 <div className="space-y-5">
                     {/* Today */}
-                    <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-5">
+                    <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-4 sm:p-5">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="font-semibold text-neutral-900">Today's schedule</h2>
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-orange-400" />
+                                <h2 className="font-semibold text-neutral-900">Today's schedule</h2>
+                            </div>
                             <span className="text-xs font-medium text-neutral-400">
                                 {new Date().toLocaleDateString("en-US", {
                                     weekday: "short",
@@ -213,9 +210,12 @@ export default function DashboardOverview() {
                     </div>
 
                     {/* Upcoming */}
-                    <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-5">
+                    <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-4 sm:p-5">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="font-semibold text-neutral-900">Upcoming</h2>
+                            <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-sky-400" />
+                                <h2 className="font-semibold text-neutral-900">Upcoming</h2>
+                            </div>
                             <Link
                                 href="/dashboard/events"
                                 className="text-xs font-medium text-neutral-500 hover:text-neutral-900 flex items-center gap-1 transition-colors"

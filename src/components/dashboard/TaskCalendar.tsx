@@ -105,9 +105,9 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
     const totalEvents = events.length;
 
     return (
-        <div className="calendar-card rounded-3xl bg-white border border-neutral-200/60 shadow-sm p-5 sm:p-7">
+        <div className="calendar-card rounded-3xl bg-white border border-neutral-200/60 shadow-sm p-3 sm:p-7">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-5 sm:mb-6">
                 <div>
                     <div className="flex items-center gap-3">
                         <h2 className="text-2xl font-bold text-neutral-900 tracking-tight">
@@ -173,13 +173,13 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
             </div>
 
             {/* Column headers */}
-            <div className="grid grid-cols-7 gap-1.5 sm:gap-2 mb-1">
+            <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-1">
                 {weekDays.map((day, i) => {
                     const isTodayCol = i === (today.getDay() + 6) % 7;
                     return (
                         <div
                             key={day}
-                            className={`text-center text-[11px] font-bold tracking-wider uppercase py-2 rounded-lg ${
+                            className={`text-center text-[10px] sm:text-[11px] font-bold tracking-wider uppercase py-1.5 sm:py-2 rounded-lg ${
                                 isTodayCol
                                     ? "text-orange-600 bg-orange-50"
                                     : "text-neutral-400"
@@ -204,7 +204,7 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
                 </div>
             ) : (
                 <div
-                    className={`grid grid-cols-7 gap-1.5 sm:gap-2 mt-1 calendar-grid ${
+                    className={`grid grid-cols-7 gap-1 sm:gap-2 mt-1 calendar-grid ${
                         isTransitioning ? "opacity-0 scale-[0.98]" : "opacity-100 scale-100"
                     } transition-all duration-300 ease-out`}
                 >
@@ -214,17 +214,17 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
                         const colIndex = idx % 7;
                         const isTodayCol = colIndex === (today.getDay() + 6) % 7;
                         const dayEvents = byDate[dateStr] ?? [];
-                        const visible = dayEvents.slice(0, 3);
+                        const visible = dayEvents.slice(0, 2);
                         const extra = dayEvents.length - visible.length;
 
                         return (
                             <div
                                 key={idx}
-                                className={`rounded-xl p-1.5 sm:p-2 transition-all duration-200 ${
+                                className={`flex flex-col rounded-xl p-1 sm:p-2 transition-all duration-200 ${
                                     isTodayCol ? "bg-stone-100/70" : "hover:bg-stone-50"
                                 }`}
                             >
-                                <div className="flex items-center justify-between mb-1">
+                                <div className="flex items-center justify-between mb-0.5">
                                     <Link
                                         href={`/dashboard/calendar/${dateStr}`}
                                         className={`calendar-date-link inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full text-sm font-bold transition-all duration-200 ${
@@ -240,13 +240,30 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
                                         {cell.date.getDate()}
                                     </Link>
                                     {dayEvents.length > 0 && (
-                                        <span className="text-[10px] font-semibold text-neutral-400 bg-neutral-100 rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                                        <span className="hidden sm:inline-flex text-[10px] font-semibold text-neutral-500 bg-neutral-100 rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
                                             {dayEvents.length}
                                         </span>
                                     )}
                                 </div>
 
-                                <div className="space-y-1">
+                                {/* Mobile: event dots */}
+                                <div className="flex items-center justify-center gap-0.5 sm:hidden mt-1 flex-wrap px-0.5">
+                                    {dayEvents.length === 0 ? (
+                                        <span />
+                                    ) : (
+                                        dayEvents.slice(0, 4).map((ev) => (
+                                            <span
+                                                key={ev.id}
+                                                className={`w-1.5 h-1.5 rounded-full ${
+                                                    colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"
+                                                }`}
+                                            />
+                                        ))
+                                    )}
+                                </div>
+
+                                {/* Desktop: event chips */}
+                                <div className="hidden sm:block space-y-1 mt-0.5">
                                     {visible.map((ev) => (
                                         <Link
                                             key={ev.id}

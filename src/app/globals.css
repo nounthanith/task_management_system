@@ -193,34 +193,12 @@
 
 /* Floating action button (Add event) */
 .tabbar-fab {
-  animation: fabFloat 3s ease-in-out infinite;
   box-shadow: 0 8px 20px -2px rgba(17, 17, 17, 0.4);
+  transition: transform 0.2s ease;
 }
 
-@keyframes fabFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-/* Active tab icon bounce-in */
-.mobile-tabbar a[class*="text-orange-600"] svg {
-  animation: tabBounce 0.3s ease-out;
-}
-
-@keyframes tabBounce {
-  0% {
-    transform: scale(0.8);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
+.tabbar-fab:active {
+  transform: translateY(-6px) scale(0.94);
 }
 
 /* Mobile tab bar entry animation */

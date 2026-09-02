@@ -105,37 +105,39 @@ export default function CalendarDateView({ date }: { date: string }) {
         <div className="max-w-3xl mx-auto space-y-6">
             <Link
                 href={`/dashboard/calendar?month=${date.slice(0, 7)}`}
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
             >
-                <FiArrowLeft /> Back to calendar
+                <span className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center shadow-sm">
+                    <FiArrowLeft className="text-neutral-500" />
+                </span>
+                Calendar
             </Link>
 
             {/* Header */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-neutral-900 to-neutral-800 text-white p-6 sm:p-7">
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-neutral-900 to-neutral-800 text-white p-5 sm:p-7">
                 <div className="absolute -top-12 -right-10 w-48 h-48 rounded-full bg-orange-500/25 blur-3xl pointer-events-none" />
                 <div className="relative flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/10 flex flex-col items-center justify-center shrink-0">
-                        <span className="text-2xl font-bold leading-none">{dayNumber}</span>
-                        <span className="text-[11px] font-medium text-white/60 uppercase mt-0.5">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/10 backdrop-blur border border-white/10 flex flex-col items-center justify-center shrink-0">
+                        <span className="text-xl sm:text-2xl font-bold leading-none">{dayNumber}</span>
+                        <span className="text-[10px] sm:text-[11px] font-medium text-white/60 uppercase mt-0.5">
                             {dayOfWeek}
                         </span>
                     </div>
-                    <div className="min-w-0">
-                        <h1 className="text-xl sm:text-2xl font-bold tracking-tight truncate">
+                    <div className="min-w-0 flex-1">
+                        <h1 className="text-lg sm:text-2xl font-bold tracking-tight truncate">
                             {dayLabel || "Loading..."}
                         </h1>
-                        <p className="text-sm text-neutral-400 mt-0.5">
+                        <p className="text-xs sm:text-sm text-neutral-400 mt-0.5">
                             {events.length} event{events.length !== 1 ? "s" : ""} scheduled
                         </p>
                     </div>
-                    <div className="ml-auto shrink-0">
-                        <Link
-                            href={`/dashboard/calendar/new?date=${encodeURIComponent(date)}`}
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-400 text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:from-orange-600 hover:to-orange-500 shadow-lg shadow-orange-500/25 transition-all duration-200 active:scale-[0.98]"
-                        >
-                            <FiPlus /> New event
-                        </Link>
-                    </div>
+                    <Link
+                        href={`/dashboard/calendar/new?date=${encodeURIComponent(date)}`}
+                        className="inline-flex items-center justify-center gap-1.5 w-10 h-10 sm:w-auto sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 text-white text-sm font-semibold hover:from-orange-600 hover:to-orange-500 shadow-lg shadow-orange-500/25 transition-all duration-200 active:scale-[0.98] shrink-0"
+                        aria-label="New event"
+                    >
+                        <FiPlus /> <span className="hidden sm:inline">New event</span>
+                    </Link>
                 </div>
             </div>
 

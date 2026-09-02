@@ -38,7 +38,7 @@ function MobileTabBar({ pathname }: { pathname: string }) {
             className="mobile-tabbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-neutral-200/70 shadow-[0_-4px_24px_rgba(0,0,0,0.06)]"
             aria-label="Primary"
         >
-            <div className="flex items-stretch justify-around h-16 px-2">
+            <div className="relative flex items-stretch justify-around h-16 px-2">
                 {mobileTabs.map((item) => {
                     const active = isActive(item);
                     if (item.highlight) {
@@ -49,8 +49,11 @@ function MobileTabBar({ pathname }: { pathname: string }) {
                                 className="flex-1 flex flex-col items-center justify-center relative"
                                 aria-label="Add event"
                             >
-                                <span className="tabbar-fab -mt-8 w-12 h-12 p-1 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 text-white flex items-center justify-center shadow-lg shadow-orange-500/30 ring-4 ring-white">
+                                <span className="tabbar-fab -translate-y-6 w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 text-white flex items-center justify-center shadow-lg shadow-orange-500/40 ring-[3px] ring-white">
                                     <FiPlus className="text-2xl" />
+                                </span>
+                                <span className="mt-0.5 text-[10px] font-semibold text-neutral-400">
+                                    Add
                                 </span>
                             </Link>
                         );
@@ -63,13 +66,15 @@ function MobileTabBar({ pathname }: { pathname: string }) {
                                 active ? "text-orange-600" : "text-neutral-400 hover:text-neutral-700"
                             }`}
                         >
-                            <span className="relative">
+                            <span className="relative flex flex-col items-center gap-0.5">
                                 <item.icon
                                     className={`text-[22px] transition-transform duration-200 ${active ? "scale-110" : ""}`}
                                 />
-                                {active && (
-                                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-orange-500" />
-                                )}
+                                <span
+                                    className={`h-1 w-4 rounded-full transition-all duration-200 ${
+                                        active ? "bg-orange-500" : "bg-transparent"
+                                    }`}
+                                />
                             </span>
                             <span
                                 className={`text-[10px] font-semibold ${active ? "text-orange-600" : "text-neutral-400"}`}

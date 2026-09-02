@@ -83,7 +83,12 @@ export default function CalendarPage() {
             {/* Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">{monthLabel}</h1>
+                    <div>
+                        <h1 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">{monthLabel}</h1>
+                        <p className="text-xs sm:text-sm text-neutral-500 mt-0.5">
+                            Manage your schedule for this period
+                        </p>
+                    </div>
                     <div className="flex items-center gap-1 bg-white border border-neutral-200 rounded-xl p-1 shadow-sm">
                         <button
                             onClick={() => shiftMonth(-1)}
@@ -104,12 +109,12 @@ export default function CalendarPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <div className="flex bg-neutral-200/70 rounded-xl p-1">
+                    <div className="flex flex-1 sm:flex-none bg-neutral-200/70 rounded-xl p-1">
                         {viewOptions.map((opt) => (
                             <button
                                 key={opt.key}
                                 onClick={() => setView(opt.key)}
-                                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                                className={`flex-1 sm:flex-none px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                                     view === opt.key
                                         ? "bg-white text-neutral-900 shadow-sm"
                                         : "text-neutral-500 hover:text-neutral-800"
@@ -131,8 +136,8 @@ export default function CalendarPage() {
             {view === "month" && <TaskCalendar initialMonth={currentMonth} />}
 
             {view === "week" && (
-                <div className="bg-white rounded-3xl p-6 border border-neutral-200/60 shadow-sm">
-                    <div className="grid grid-cols-7 gap-2 sm:gap-3">
+                <div className="bg-white rounded-3xl p-4 sm:p-6 border border-neutral-200/60 shadow-sm">
+                    <div className="grid grid-cols-7 gap-1.5 sm:gap-3">
                         {range.map((d) => {
                             const key = toDateKey(d);
                             const dayEvents = byDate[key] ?? [];
@@ -140,13 +145,13 @@ export default function CalendarPage() {
                             return (
                                 <div
                                     key={key}
-                                    className={`rounded-xl p-2 sm:p-3 ${
+                                    className={`rounded-xl p-1 sm:p-3 ${
                                         isToday ? "bg-orange-50/70 ring-1 ring-orange-200" : "bg-neutral-50"
                                     }`}
                                 >
                                     <button
                                         onClick={() => goToDate(key)}
-                                        className={`w-full text-center mb-2 ${
+                                        className={`w-full text-center ${
                                             isToday ? "text-orange-600" : "text-neutral-500"
                                         }`}
                                     >
@@ -154,14 +159,14 @@ export default function CalendarPage() {
                                             {d.toLocaleDateString("en-US", { weekday: "short" })}
                                         </span>
                                         <span
-                                            className={`inline-flex mt-0.5 w-8 h-8 items-center justify-center rounded-full text-sm font-bold ${
+                                            className={`inline-flex mt-0.5 w-7 h-7 sm:w-8 sm:h-8 items-center justify-center rounded-full text-sm font-bold ${
                                                 isToday ? "bg-orange-500 text-white shadow-md shadow-orange-200" : "text-neutral-700"
                                             }`}
                                         >
                                             {d.getDate()}
                                         </span>
                                     </button>
-                                    <div className="space-y-1.5 mt-1">
+                                    <div className="hidden sm:block space-y-1.5 mt-1">
                                         {dayEvents.length === 0 && (
                                             <div className="h-9 rounded-lg bg-white/70 border border-dashed border-neutral-200"></div>
                                         )}
@@ -190,6 +195,19 @@ export default function CalendarPage() {
                                             </Link>
                                         )}
                                     </div>
+                                    {/* Mobile: event dots */}
+                                    {dayEvents.length > 0 && (
+                                        <div className="flex sm:hidden items-center justify-center gap-0.5 mt-1 flex-wrap">
+                                            {dayEvents.slice(0, 4).map((ev) => (
+                                                <span
+                                                    key={ev.id}
+                                                    className={`w-1.5 h-1.5 rounded-full ${
+                                                        colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"
+                                                    }`}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}
@@ -198,7 +216,7 @@ export default function CalendarPage() {
             )}
 
             {view === "day" && (
-                <div className="bg-white rounded-3xl p-6 border border-neutral-200/60 shadow-sm">
+                <div className="bg-white rounded-3xl p-5 sm:p-6 border border-neutral-200/60 shadow-sm">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-3">
                         <h2 className="font-semibold text-neutral-900 text-lg">
                             {dateKeyToDate(todayKey).toLocaleDateString("en-US", {

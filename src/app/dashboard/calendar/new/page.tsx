@@ -110,12 +110,15 @@ function NewEventForm() {
         <div className="max-w-3xl mx-auto space-y-6">
             <Link
                 href="/dashboard/calendar"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
             >
-                <FiArrowLeft /> Back to calendar
+                <span className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center shadow-sm">
+                    <FiArrowLeft className="text-neutral-500" />
+                </span>
+                Calendar
             </Link>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-3 px-1">
                 <div>
                     <h1 className="text-2xl font-bold text-neutral-900 tracking-tight">
                         {isEdit ? "Edit event" : "New event"}
@@ -127,7 +130,7 @@ function NewEventForm() {
                     </p>
                 </div>
                 <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold shrink-0 ${
                         isEdit ? "bg-sky-100 text-sky-700" : "bg-orange-100 text-orange-700"
                     }`}
                 >
@@ -143,7 +146,7 @@ function NewEventForm() {
 
             <form
                 onSubmit={handleSubmit}
-                className="rounded-3xl bg-white border border-neutral-200/60 shadow-sm p-6 sm:p-8 space-y-6"
+                className="rounded-3xl bg-white border border-neutral-200/60 shadow-sm p-5 sm:p-8 space-y-6"
             >
                 {/* Title */}
                 <div>
@@ -272,11 +275,11 @@ function NewEventForm() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-3 pt-2 border-t border-neutral-100">
+                <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 pt-2 border-t border-neutral-100">
                     <button
                         type="submit"
                         disabled={loading}
-                        className="inline-flex items-center justify-center bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 disabled:opacity-60 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+                        className="inline-flex items-center justify-center bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-6 py-3.5 sm:py-2.5 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 disabled:opacity-60 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
                     >
                         {loading
                             ? isEdit
@@ -288,7 +291,7 @@ function NewEventForm() {
                     </button>
                     <Link
                         href="/dashboard/calendar"
-                        className="text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
+                        className="inline-flex items-center justify-center text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors sm:px-2 py-1 text-center"
                     >
                         Cancel
                     </Link>

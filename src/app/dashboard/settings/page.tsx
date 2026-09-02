@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FiBell, FiCalendar, FiCheck, FiChevronRight, FiSun, FiShield } from "react-icons/fi";
+import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+import {
+    FiBell,
+    FiCalendar,
+    FiCheck,
+    FiChevronRight,
+    FiLogOut,
+    FiUser,
+} from "react-icons/fi";
 import Alert from "@/components/ui/Alert";
 
 const weekStarts = ["Monday", "Sunday"];
@@ -120,19 +129,22 @@ function Row({
     children: React.ReactNode;
 }) {
     return (
-        <div className="flex items-center justify-between gap-4 py-4 border-b border-neutral-100 last:border-0">
-            <div className="pr-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 py-4 border-b border-neutral-100 last:border-0">
+            <div className="min-w-0">
                 <p className="text-sm font-medium text-neutral-800">{label}</p>
                 {hint && <p className="text-xs text-neutral-400 mt-0.5">{hint}</p>}
             </div>
-            {children}
+            <div className="flex items-center">{children}</div>
         </div>
     );
 }
 
 export default function SettingsPage() {
+    const { data: session } = useSession();
     const [settings, setSettings] = useState<Settings>(() => load());
     const [saved, setSaved] = useState(false);
+
+    const initial = session?.user?.name?.charAt(0).toUpperCase() || "U";
 
     useEffect(() => {
         if (saved) {
@@ -210,20 +222,60 @@ export default function SettingsPage() {
                 </Row>
             </Section>
 
+            <Section icon={<FiUser className="text-lg" />} title="Account" subtitle="Manage your profile and session" accent="from-emerald-400 to-teal-500">
+                <Link
+                    href="/profile"
+                    className="flex items-center justify-between gap-4 py-4 border-b border-neutral-100 hover:bg-neutral-50/60 rounded-lg -mx-2 px-2 transition-colors"
+                >
+                    <div className="flex items-center gap-3 min-w-0">
+                        <span className="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 text-white text-sm font-bold flex items-center justify-center shrink-0 shadow-sm">
+                            {initial}
+                        </span>
+                        <div className="min-w-0">
+                            <p className="text-sm font-medium text-neutral-800 truncate">
+                                {session?.user?.name || "Account"}
+                            </p>
+                            <p className="text-xs text-neutral-400 truncate">
+                                {session?.user?.email || "user@email.com"}
+                            </p>
+                        </div>
+                    </div>
+                    <FiChevronRight className="text-neutral-300 shrink-0" />
+                </Link>
+                <button
+                    onClick={() => signOut({ callbackUrl: "/login" })}
+                    className="w-full flex items-center justify-between gap-4 py-4 text-left hover:bg-red-50/60 rounded-lg -mx-2 px-2 transition-colors group"
+                >
+                    <div className="flex items-center gap-3">
+                        <span className="w-11 h-11 rounded-full bg-red-50 text-red-500 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
+                            <FiLogOut className="text-lg" />
+                        </span>
+                        <div>
+                            <p className="text-sm font-medium text-red-600 group-hover:text-red-700 transition-colors">
+                                Log out
+                            </p>
+                            <p className="text-xs text-neutral-400 mt-0.5">End your current session</p>
+                        </div>
+                    </div>
+                    <FiChevronRight className="text-neutral-300 shrink-0 group-hover:text-red-400 transition-colors" />
+                </button>
+            </Section>
+
             {/* Save bar */}
-            <div className="sticky bottom-24 lg:bottom-6 rounded-2xl bg-white/90 backdrop-blur border border-neutral-200/70 shadow-lg p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-sm text-neutral-500">
-                    <FiChevronRight className="text-neutral-300" />
-                    Changes are saved to this browser
-                </div>
+            <div className="sticky bottom-24 lg:bottom-6 rounded-2xl bg-white/90 backdrop-blur border border-neutral-200/70 shadow-lg p-3 sm:p-4 flex items-center justify-center">
                 <button
                     onClick={save}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 shadow-md shadow-neutral-900/15 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-8 sm:px-10 py-3 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 shadow-md shadow-neutral-900/15 transition-all duration-200 hover:shadow-lg active:scale-[0.98] w-full sm:w-auto"
                 >
                     <FiCheck className="text-base" />
-                    Save settings
+                    Save
                 </button>
             </div>
+
+            {/* Bottom note */}
+            <p className="text-center text-xs text-neutral-400 px-4">
+                Changes are saved to this browser.
+            </p>
         </div>
     );
 }
