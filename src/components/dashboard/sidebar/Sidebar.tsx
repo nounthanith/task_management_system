@@ -49,7 +49,7 @@ function MobileTabBar({ pathname }: { pathname: string }) {
                                 className="flex-1 flex flex-col items-center justify-center relative"
                                 aria-label="Add event"
                             >
-                                <span className="tabbar-fab -translate-y-6 w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 text-white flex items-center justify-center shadow-lg shadow-orange-500/40 ring-[3px] ring-white">
+                                <span className="tabbar-fab -translate-y-6 w-12 h-12 rounded-full bg-linear-to-br from-orange-500 to-orange-400 text-white flex items-center justify-center shadow-lg shadow-orange-500/40 ring-[3px] ring-white">
                                     <FiPlus className="text-2xl" />
                                 </span>
                                 <span className="mt-0.5 text-[10px] font-semibold text-neutral-400">
@@ -106,7 +106,7 @@ function DesktopSidebarContent({
             {/* Logo / Brand */}
             <div className="px-6 pt-7 pb-2">
                 <Link href="/dashboard" className="flex items-center gap-2.5 group">
-                    <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-neutral-900 to-neutral-700 text-white flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                    <span className="w-9 h-9 rounded-xl bg-linear-to-br from-neutral-900 to-neutral-700 text-white flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                         <FiCalendar className="text-lg" />
                     </span>
                     <span className="font-bold text-neutral-900 text-lg tracking-tight">
@@ -119,7 +119,7 @@ function DesktopSidebarContent({
             <div className="px-4 mt-5">
                 <Link
                     href="/dashboard/calendar/new"
-                    className="sidebar-cta relative overflow-hidden flex items-center justify-start gap-2.5 rounded-xl bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-3 py-2.5 text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+                    className="sidebar-cta relative overflow-hidden flex items-center justify-start gap-2.5 rounded-xl bg-linear-to-r from-neutral-900 to-neutral-800 text-white px-3 py-2.5 text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
                 >
                     <FiPlus className="text-base shrink-0" />
                     <span>Add event</span>
@@ -139,12 +139,12 @@ function DesktopSidebarContent({
                             href={item.href}
                             className={`sidebar-nav-item relative flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                                 active
-                                    ? "bg-gradient-to-r from-orange-50 to-transparent text-neutral-900"
+                                    ? "bg-linear-to-r from-orange-50 to-transparent text-neutral-900"
                                     : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800"
                             }`}
                         >
                             {active && (
-                                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-gradient-to-b from-orange-500 to-orange-400 rounded-r-full shadow-sm shadow-orange-200" />
+                                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-6 bg-linear-to-b from-orange-500 to-orange-400 rounded-r-full shadow-sm shadow-orange-200" />
                             )}
                             <item.icon
                                 className={`text-lg shrink-0 transition-colors duration-200 ${
@@ -169,7 +169,7 @@ function DesktopSidebarContent({
                     href="/profile"
                     className="sidebar-nav-item relative flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900 transition-all duration-200"
                 >
-                    <span className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 text-white text-sm font-bold flex items-center justify-center shrink-0 shadow-sm">
+                    <span className="w-9 h-9 rounded-full bg-linear-to-br from-orange-400 to-orange-500 text-white text-sm font-bold flex items-center justify-center shrink-0 shadow-sm">
                         {initial}
                     </span>
                     <span className="flex flex-col min-w-0">
@@ -188,7 +188,7 @@ function DesktopSidebarContent({
                     onClick={() => signOut({ callbackUrl: "/login" })}
                     className="sidebar-nav-item flex items-center justify-start gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-neutral-400 hover:bg-red-50 hover:text-red-600 transition-all duration-200 group"
                 >
-                    <FiLogOut className="text-lg shrink-0 group-hover:translate-x-[-2px] transition-transform duration-200" />
+                    <FiLogOut className="text-lg shrink-0 group-hover:-translate-x-0.5 transition-transform duration-200" />
                     <span>Logout</span>
                 </button>
             </div>

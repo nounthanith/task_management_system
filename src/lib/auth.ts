@@ -62,21 +62,28 @@ export const authOptions: AuthOptions = {
                 if (token.email) {
                     await connectDB();
                     const dbUser = await User.findOne({ email: token.email });
-                    if (dbUser) token.id = dbUser._id.toString();
+                    if (dbUser) {
+                        token.id = dbUser._id.toString();
+                        token.role = dbUser.role;
+                    }
                 }
                 if (!token.id) token.id = user.id;
             } else if (!token.id && token.email) {
                 // Refresh path: fetch the id for returning users.
                 await connectDB();
                 const dbUser = await User.findOne({ email: token.email });
-                if (dbUser) token.id = dbUser._id.toString();
+                if (dbUser) {
+                    token.id = dbUser._id.toString();
+                    token.role = dbUser.role;
+                }
             }
             return token;
         },
 
         async session({ session, token }) {
             if (session.user) {
-                (session.user as { id?: string }).id = token.id as string;
+                (session.user as { id?: string; role?: string }).id = token.id as string;
+                (session.user as { role?: string }).role = (token.role as string) || "user";
             }
             return session;
         }
@@ -89,4 +96,10 @@ export async function getUserId(): Promise<string | null> {
     const session = await getServerSession(authOptions);
     const id = (session?.user as { id?: string } | undefined)?.id;
     return typeof id === "string" && id ? id : null;
+}
+
+/** Return true only if the current user is signed in with the "admin" role. */
+export async function isAdmin(): Promise<boolean> {
+    const session = await getServerSession(authOptions);
+    return (session?.user as { role?: string } | undefined)?.role === "admin";
 }
