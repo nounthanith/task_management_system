@@ -58,21 +58,21 @@ export default async function Users({
             {/* Stats */}
             <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
                 <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-3 sm:p-5 flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-orange-400 to-orange-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
+                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-orange-400 to-orange-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
                         <FiUsers className="text-base sm:text-lg" />
                     </span>
                     <p className="text-xs sm:text-sm text-neutral-500">Total</p>
                     <p className="text-2xl font-bold text-neutral-900 leading-tight">{total}</p>
                 </div>
                 <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-3 sm:p-5 flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
+                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-emerald-400 to-teal-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
                         <FiShield className="text-base sm:text-lg" />
                     </span>
                     <p className="text-xs sm:text-sm text-neutral-500">Admins</p>
                     <p className="text-2xl font-bold text-neutral-900 leading-tight">{admins}</p>
                 </div>
                 <div className="rounded-2xl bg-white border border-neutral-200/60 shadow-sm p-3 sm:p-5 flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-sky-400 to-blue-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
+                    <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-br from-sky-400 to-blue-500 text-white flex items-center justify-center shadow-md shrink-0 mb-2">
                         <FiUser className="text-base sm:text-lg" />
                     </span>
                     <p className="text-xs sm:text-sm text-neutral-500">Members</p>
@@ -109,8 +109,8 @@ export default async function Users({
                                     <span
                                         className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white shrink-0 shadow-sm ${
                                             isAdmin
-                                                ? "bg-gradient-to-br from-orange-400 to-orange-500"
-                                                : "bg-gradient-to-br from-neutral-400 to-neutral-500"
+                                                ? "bg-linear-to-br from-orange-400 to-orange-500"
+                                                : "bg-linear-to-br from-neutral-400 to-neutral-500"
                                         }`}
                                     >
                                         {user.name?.charAt(0).toUpperCase() || "U"}

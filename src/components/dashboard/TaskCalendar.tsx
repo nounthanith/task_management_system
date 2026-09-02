@@ -9,28 +9,11 @@ import {
     FiMoreHorizontal,
     FiClock,
 } from "react-icons/fi";
-import { CalendarEvent, toDateKey, parseMonthKey, serializeEvent } from "@/lib/calendar";
+import { CalendarEvent, toDateKey, parseMonthKey, serializeEvent, formatMonthYear } from "@/lib/calendar";
 import { useCalendarNav } from "@/components/dashboard/useCalendarNav";
+import { dotColor, bgColor } from "@/lib/calendarColors";
 
 const weekDays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-
-const colorDot: Record<string, string> = {
-    yellow: "bg-amber-400",
-    green: "bg-emerald-400",
-    blue: "bg-sky-400",
-    pink: "bg-pink-400",
-    red: "bg-red-400",
-    purple: "bg-violet-400",
-};
-
-const colorBg: Record<string, string> = {
-    yellow: "bg-amber-50 border-amber-200",
-    green: "bg-emerald-50 border-emerald-200",
-    blue: "bg-sky-50 border-sky-200",
-    pink: "bg-pink-50 border-pink-200",
-    red: "bg-red-50 border-red-200",
-    purple: "bg-violet-50 border-violet-200",
-};
 
 export default function TaskCalendar({ initialMonth }: { initialMonth?: string }) {
     const today = new Date();
@@ -74,10 +57,7 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
 
     const isCurrentMonth = today.getFullYear() === year && today.getMonth() === month;
 
-    const monthLabel = new Date(year, month, 1).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-    });
+    const monthLabel = formatMonthYear(new Date(year, month, 1));
 
     const firstDay = new Date(year, month, 1);
     const lead = (firstDay.getDay() + 6) % 7;
@@ -255,7 +235,7 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
                                             <span
                                                 key={ev.id}
                                                 className={`w-1.5 h-1.5 rounded-full ${
-                                                    colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"
+                                                    dotColor(ev.color)
                                                 }`}
                                             />
                                         ))
@@ -269,13 +249,13 @@ export default function TaskCalendar({ initialMonth }: { initialMonth?: string }
                                             key={ev.id}
                                             href={`/dashboard/calendar/${dateStr}`}
                                             className={`calendar-event-cell block rounded-lg px-1.5 py-1 border transition-all duration-200 hover:shadow-sm ${
-                                                colorBg[ev.color ?? "yellow"] ?? "bg-amber-50 border-amber-200"
+                                                bgColor(ev.color)
                                             }`}
                                         >
                                             <p className="text-[10px] font-semibold text-neutral-800 truncate flex items-center gap-1">
                                                 <span
                                                     className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                                                        colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"
+                                                        dotColor(ev.color)
                                                     }`}
                                                 />
                                                 {ev.title}

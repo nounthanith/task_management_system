@@ -50,3 +50,33 @@ export function parseMonthKey(key: string): { year: number; month: number } {
     const [y, m] = key.split("-").map(Number);
     return { year: y, month: m - 1 };
 }
+
+/** Full, long date label, e.g. "Tuesday, March 3". */
+export function formatFullDate(d: Date): string {
+    return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+}
+
+/** Full weekday + short month, e.g. "Tue, Mar 3". */
+export function formatFullDateShort(d: Date): string {
+    return d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+}
+
+/** Month + year, e.g. "March 2026". */
+export function formatMonthYear(d: Date): string {
+    return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+/** Short weekday, e.g. "Tue". */
+export function formatWeekdayShort(d: Date): string {
+    return d.toLocaleDateString("en-US", { weekday: "short" });
+}
+
+/** Short date, e.g. "Mar 3". */
+export function formatDateShort(d: Date): string {
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+/** Format a "yyyy-mm-dd" key using a given formatter, avoiding timezone issues. */
+export function formatDateKey(key: string, formatter: (d: Date) => string): string {
+    return formatter(dateKeyToDate(key));
+}

@@ -5,25 +5,16 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { FiPlus, FiArrowRight, FiCalendar, FiList, FiClock } from "react-icons/fi";
 import TaskCalendar from "@/components/dashboard/TaskCalendar";
-import { toDateKey, serializeEvent, type CalendarEvent } from "@/lib/calendar";
-
-const colorDot: Record<string, string> = {
-    yellow: "bg-amber-400",
-    green: "bg-emerald-400",
-    blue: "bg-sky-400",
-    pink: "bg-pink-400",
-    red: "bg-red-400",
-    purple: "bg-violet-400",
-};
-
-const colorBar: Record<string, string> = {
-    yellow: "border-l-amber-400",
-    green: "border-l-emerald-400",
-    blue: "border-l-sky-400",
-    pink: "border-l-pink-400",
-    red: "border-l-red-400",
-    purple: "border-l-violet-400",
-};
+import { dotColor, barColor } from "@/lib/calendarColors";
+import {
+    toDateKey,
+    serializeEvent,
+    formatFullDate,
+    formatDateShort,
+    formatWeekdayShort,
+    dateKeyToDate,
+    type CalendarEvent,
+} from "@/lib/calendar";
 
 function StatCard({
     label,
@@ -91,11 +82,7 @@ export default function DashboardOverview() {
     const monthEvents = events.filter((e) => e.date.slice(0, 7) === monthPrefix).length;
 
     const firstName = session?.user?.name?.split(" ")[0] || "there";
-    const todayDate = new Date().toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-    });
+    const todayDate = formatFullDate(new Date());
 
     return (
         <div className="space-y-6">
@@ -186,7 +173,7 @@ export default function DashboardOverview() {
                                         key={ev.id}
                                         href={`/dashboard/calendar/${ev.date}`}
                                         className={`flex items-center gap-3 p-3 rounded-xl bg-neutral-50/70 border-l-4 hover:bg-neutral-50 transition-all duration-200 hover:shadow-sm ${
-                                            colorBar[ev.color ?? "yellow"] ?? "border-l-amber-400"
+                                            barColor(ev.color)
                                         }`}
                                     >
                                         <span
@@ -198,7 +185,7 @@ export default function DashboardOverview() {
                                         </span>
                                         <div className="min-w-0">
                                             <p className="text-sm font-semibold text-neutral-800 truncate flex items-center gap-1.5">
-                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"}`} />
+                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotColor(ev.color)}`} />
                                                 {ev.title}
                                             </p>
                                             <p className="text-xs text-neutral-400 truncate mt-0.5">{ev.location || "No location"}</p>
@@ -235,22 +222,19 @@ export default function DashboardOverview() {
                                     >
                                         <div className="w-10 shrink-0 rounded-lg bg-orange-50 border border-orange-100 text-center py-1.5">
                                             <p className="text-base font-bold text-orange-600 leading-none">
-                                                {new Date(ev.date + "T00:00:00").getDate()}
+                                                {dateKeyToDate(ev.date).getDate()}
                                             </p>
                                             <p className="text-[10px] font-semibold text-orange-400 uppercase mt-0.5">
-                                                {new Date(ev.date + "T00:00:00").toLocaleDateString("en-US", { weekday: "short" })}
+                                                {formatWeekdayShort(dateKeyToDate(ev.date))}
                                             </p>
                                         </div>
                                         <div className="min-w-0">
                                             <p className="text-sm font-semibold text-neutral-800 truncate flex items-center gap-1.5">
-                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${colorDot[ev.color ?? "yellow"] ?? "bg-amber-400"}`} />
+                                                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dotColor(ev.color)}`} />
                                                 {ev.title}
                                             </p>
                                             <p className="text-xs text-neutral-400 truncate mt-0.5">
-                                                {new Date(ev.date + "T00:00:00").toLocaleDateString("en-US", {
-                                                    month: "short",
-                                                    day: "numeric",
-                                                })}
+                                                {formatDateShort(dateKeyToDate(ev.date))}
                                                 {ev.time ? ` · ${ev.time}` : ev.isAllDay ? " · All day" : ""}
                                             </p>
                                         </div>

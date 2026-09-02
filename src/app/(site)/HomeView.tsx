@@ -134,7 +134,7 @@ export default function HomeView() {
 
             {/* Footer */}
             <footer className="w-full border-t border-primary/10 py-8 text-center text-sm text-muted">
-                <p>Made with care for getting things done.</p>
+                <p>Made with care for getting things done. Developed by: Tong</p>
             </footer>
         </div>
     );

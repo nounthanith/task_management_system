@@ -1,21 +1,14 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FiArrowLeft, FiClock, FiMapPin, FiAlignLeft, FiType } from "react-icons/fi";
+import { FiClock, FiMapPin, FiAlignLeft, FiType } from "react-icons/fi";
 import Alert from "@/components/ui/Alert";
+import BackLink from "@/components/ui/BackLink";
 import { toDateKey } from "@/lib/calendar";
+import { colorDot, colorRing, EVENT_COLORS } from "@/lib/calendarColors";
 
-const colors = ["yellow", "green", "blue", "pink", "red", "purple"];
-const colorClass: Record<string, { dot: string; selected: string; ring: string }> = {
-    yellow: { dot: "bg-amber-400", selected: "", ring: "ring-amber-400" },
-    green: { dot: "bg-emerald-400", selected: "", ring: "ring-emerald-400" },
-    blue: { dot: "bg-sky-400", selected: "", ring: "ring-sky-400" },
-    pink: { dot: "bg-pink-400", selected: "", ring: "ring-pink-400" },
-    red: { dot: "bg-red-400", selected: "", ring: "ring-red-400" },
-    purple: { dot: "bg-violet-400", selected: "", ring: "ring-violet-400" },
-};
+const colors = EVENT_COLORS;
 
 function NewEventForm() {
     const router = useRouter();
@@ -108,15 +101,7 @@ function NewEventForm() {
 
     return (
         <div className="max-w-3xl mx-auto space-y-6">
-            <Link
-                href="/dashboard/calendar"
-                className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
-            >
-                <span className="w-8 h-8 rounded-full bg-white border border-neutral-200 flex items-center justify-center shadow-sm">
-                    <FiArrowLeft className="text-neutral-500" />
-                </span>
-                Calendar
-            </Link>
+            <BackLink href="/dashboard/calendar" label="Calendar" />
 
             <div className="flex items-center justify-between gap-3 px-1">
                 <div>
@@ -264,9 +249,9 @@ function NewEventForm() {
                                 type="button"
                                 onClick={() => setColor(c)}
                                 aria-label={c}
-                                className={`w-9 h-9 rounded-full ${colorClass[c].dot} transition-all duration-200 hover:scale-110 ${
+                                className={`w-9 h-9 rounded-full ${colorDot[c]} transition-all duration-200 hover:scale-110 ${
                                     color === c
-                                        ? `ring-2 ring-offset-2 ${colorClass[c].ring} scale-110`
+                                        ? `ring-2 ring-offset-2 ${colorRing[c]} scale-110`
                                         : ""
                                 }`}
                             />
@@ -275,11 +260,11 @@ function NewEventForm() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 pt-2 border-t border-neutral-100">
+                <div className="pt-2 border-t border-neutral-100">
                     <button
                         type="submit"
                         disabled={loading}
-                        className="inline-flex items-center justify-center bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-6 py-3.5 sm:py-2.5 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 disabled:opacity-60 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+                        className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-neutral-900 to-neutral-800 text-white px-6 py-3.5 rounded-xl text-sm font-medium hover:from-neutral-800 hover:to-neutral-700 disabled:opacity-60 shadow-md shadow-neutral-900/10 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
                     >
                         {loading
                             ? isEdit
@@ -289,12 +274,6 @@ function NewEventForm() {
                             ? "Save changes"
                             : "Create event"}
                     </button>
-                    <Link
-                        href="/dashboard/calendar"
-                        className="inline-flex items-center justify-center text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors sm:px-2 py-1 text-center"
-                    >
-                        Cancel
-                    </Link>
                 </div>
             </form>
         </div>
