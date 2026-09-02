@@ -1,10 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { FiUsers, FiShield, FiUser, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { isAdmin } from "@/lib/auth";
 import { getUsers } from "./action";
 
 const PER_PAGE = 10;
+
+export const metadata: Metadata = {
+    title: "Users (Admin)",
+    description: "Admin panel showing all registered users on the platform.",
+    robots: { index: false, follow: false },
+};
 
 export default async function Users({
     searchParams,

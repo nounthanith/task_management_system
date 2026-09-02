@@ -7,7 +7,7 @@ export default function Logo() {
             <span className="w-9 h-9 rounded-2xl bg-accent-yellow flex items-center justify-center shadow-soft">
                 <HiOutlineClipboardDocumentCheck className="text-lg text-primary" />
             </span>
-            <span className="text-lg font-semibold tracking-tight text-primary">Logo</span>
+            <span className="text-lg font-semibold tracking-tight text-primary">SaluTask</span>
         </Link>
     );
 }
